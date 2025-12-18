@@ -1,6 +1,6 @@
 {
   "name": "ci-cd-practice",
-  "version": "1.0.1",  # 从1.0.0改为1.0.1
+  "version": "1.0.1",  
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 0"
   },
