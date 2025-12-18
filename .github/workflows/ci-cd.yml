@@ -1,0 +1,64 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, copilot/update-user-interface ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Verify files exist
+      run: |
+        ls -la
+        test -f index.html
+        test -f server.py
+        test -f Dockerfile
+        echo "All required files are present"
+    
+    - name: Test HTML syntax
+      run: |
+        # Basic check that index.html is valid
+        grep -q "<!DOCTYPE html>" index.html
+        echo "HTML file is valid"
+    
+    - name: Build Docker image
+      run: |
+        docker build -t ci-cd-practice:${{ github.sha }} .
+        docker images
+    
+    - name: Test Docker container
+      run: |
+        # Run container in background
+        docker run -d --name test-container -p 8080:8080 ci-cd-practice:${{ github.sha }}
+        
+        # Wait for server to start
+        sleep 5
+        
+        # Test that server responds
+        curl -f http://localhost:8080/ || exit 1
+        
+        # Check that the response contains our text
+        curl -s http://localhost:8080/ | grep -q "！？弓虽虽弓？！" || exit 1
+        
+        echo "Docker container test passed"
+        
+        # Stop and remove container
+        docker stop test-container
+        docker rm test-container
+    
+    - name: Docker image cleanup
+      if: always()
+      run: |
+        docker rmi ci-cd-practice:${{ github.sha }} || true
