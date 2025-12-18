@@ -48,7 +48,7 @@ jobs:
         with:
           context: .
           push: true
-          # 注意：将 FrancisFu-qinjiu 改为 francisfu-qinjiu（全部小写）
+         
           tags: |
             ghcr.io/francisfu-qinjiu/ci-cd-practice:latest
-            ghcr.io/francisfu-qinjiu/ci-cd-practice:${{ github.sha[0,7] }}
+            ghcr.io/francisfu-qinjiu/ci-cd-practice:${{ github.sha }}
