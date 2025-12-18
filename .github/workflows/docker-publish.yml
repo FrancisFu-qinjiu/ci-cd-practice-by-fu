@@ -50,5 +50,5 @@ jobs:
           push: true
          
           tags: |
-            ghcr.io/francisfu-qinjiu/ci-cd-practice:latest
-            ghcr.io/francisfu-qinjiu/ci-cd-practice:${{ github.sha }}
+            ghcr.io/francisfu-qinjiu/ci-cd-practice-by-fu:latest
+            ghcr.io/francisfu-qinjiu/ci-cd-practice-by-fu:${{ github.sha }}
